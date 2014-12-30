@@ -59,23 +59,23 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
 	//get camera settings from registry
 	HKEY key = NULL;
 	HRESULT hr = RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\AniMiku", NULL, KEY_WRITE, &key);
-	if (key == NULL)
+	if (key != NULL)
 	{
-		return;
+		float x = atof(OptionsDialog::getValueFromRegistry(key, "cam x", DEF_CAM_X).c_str());
+		float y = atof(OptionsDialog::getValueFromRegistry(key, "cam y", DEF_CAM_Y).c_str());
+		float zoom = atof(OptionsDialog::getValueFromRegistry(key, "cam zoom", DEF_CAM_ZOOM).c_str());
+		ui->nbrCamX->setValue(x);
+		ui->nbrCamY->setValue(y);
+		ui->nbrCamZoom->setValue(zoom);
+
+		float *curTarget = TheScreen.cam->getTarget();
+		float *curPos = TheScreen.cam->getPos();
+		TheScreen.cam->lookAtFromPos((float)-x, y, curTarget[2], (float)-x, y, curPos[2]);
+		TheScreen.cam->setZoom(zoom);
+
+		RegCloseKey(key);
 	}
-	float x = atof(OptionsDialog::getValueFromRegistry(key, "cam x", DEF_CAM_X).c_str());
-	float y = atof(OptionsDialog::getValueFromRegistry(key, "cam y", DEF_CAM_Y).c_str());
-	float zoom = atof(OptionsDialog::getValueFromRegistry(key, "cam zoom", DEF_CAM_ZOOM).c_str());
-	ui->nbrCamX->setValue(x);
-	ui->nbrCamY->setValue(y);
-	ui->nbrCamZoom->setValue(zoom);
-
-	float *curTarget = TheScreen.cam->getTarget();
-	float *curPos = TheScreen.cam->getPos();
-	TheScreen.cam->lookAtFromPos((float)-x, y, curTarget[2], (float)-x, y, curPos[2]);
-	TheScreen.cam->setZoom(zoom);
-
-	RegCloseKey(key);
+	
 
 	QObject::connect(ui->btnAddSong, SIGNAL(clicked()), this, SLOT(addSong()));
 	QObject::connect(ui->btnDelSong, SIGNAL(clicked()), this, SLOT(deleteSong()));

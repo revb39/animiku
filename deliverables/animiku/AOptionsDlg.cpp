@@ -44,6 +44,7 @@ void OptionsDialog::ok()
 {
 	//open the key
 	HKEY key = NULL;
+	RegCreateKeyEx(HKEY_CURRENT_USER,"Software\\AniMiku", 0, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &key, NULL);
 	HRESULT hr = RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\AniMiku", NULL, KEY_ALL_ACCESS, &key);
 	if (key == NULL)
 		return;
