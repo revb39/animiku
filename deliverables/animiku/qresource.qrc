@@ -1,0 +1,13 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>main.ico</file>
+    <file>icons/down.png</file>
+    <file>icons/up.png</file>
+    <file>icons/del.png</file>
+    <file>icons/add.png</file>
+  </qresource>
+  <qresource prefix="shaders">
+    <file>noise.jpg</file>
+    <file>shaders/AMShader.fxo</file>
+  </qresource>
+</RCC>
